@@ -14,7 +14,7 @@ def put_bucket_policy(client, bucket):
             'Sid': 'emtest01',
             'Effect': 'Allow',
             'Principal': {"AWS": ["arn:aws:iam:::user/em_test2"]},
-            'Action': ['s3:GetObject', 's3:ListBucket'],
+            'Action': ['s3:GetObject', 's3:ListBucket', 's3:DeleteBucket'],
             'Resource': ["arn:aws:s3:::%s/*" % (bucket),
                          "arn:aws:s3:::%s" % (bucket)]
         }]
