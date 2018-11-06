@@ -2,6 +2,7 @@ import sys
 import boto3
 import json
 import getopt
+import datetime
 from botocore.client import Config
 
 
@@ -18,11 +19,17 @@ def suspend_bucket_versioning(client, bucket):
                                         VersioningConfiguration = {
                                             'Status': 'Suspended'})
 
+def list_object_versions(client, bucket):
+    return client.list_object_versions(Bucket = bucket)
+
+def default(o):
+    if type(o) is datetime.date or type(o) is datetime.datetime:
+        return o.isoformat()
 
 def json_format(res):
     if type(res) == str:
         res = json.loads(res)
-    return json.dumps(res, indent = 4)
+    return json.dumps(res, indent = 4, default = default)
 
 
 def main():
@@ -31,7 +38,7 @@ def main():
                             aws_secret_access_key = 'em_test1',
                             config = Config(signature_version = 's3v4'))
 
-    opts, args = getopt.getopt(sys.argv[1:], 'g:p:s:', ['get=', 'put=', 'susp='])
+    opts, args = getopt.getopt(sys.argv[1:], 'g:p:s:l:', ['get=', 'put=', 'susp=', 'list='])
     if opts:
         for o, a in opts:
             if o in ('-g', '--get'):
@@ -44,6 +51,9 @@ def main():
             elif o in ('-s', '--susp'):
                 suspend_bucket_versioning(s3client, a)
                 res = get_bucket_versioning(s3client, a)
+                print json_format(res)
+            elif o in ('-l', '--list'):
+                res = list_object_versions(s3client, a)
                 print json_format(res)
     else:
         print 'Get optional error!'
