@@ -19,6 +19,11 @@ def suspend_bucket_versioning(client, bucket):
                                             'Status': 'Suspended'})
 
 
+def json_format(res):
+    if type(res) == str:
+        res = json.loads(res)
+    return json.dumps(res, indent = 4)
+
 
 def main():
     s3client = boto3.client('s3', endpoint_url = 'http://192.168.2.17:8080',
@@ -31,15 +36,15 @@ def main():
         for o, a in opts:
             if o in ('-g', '--get'):
                 res = get_bucket_versioning(s3client, a)
-                print res
+                print json_format(res)
             elif o in ('-p', '--put'):
                 put_bucket_versioning(s3client, a)
                 res = get_bucket_versioning(s3client, a)
-                print res
+                print json_format(res)
             elif o in ('-s', '--susp'):
                 suspend_bucket_versioning(s3client, a)
                 res = get_bucket_versioning(s3client, a)
-                print res
+                print json_format(res)
     else:
         print 'Get optional error!'
         return -1
