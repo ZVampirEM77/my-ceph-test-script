@@ -5,11 +5,11 @@ import requests
 import getopt
 import subprocess
 
-VOLUMES_V3 = 'http://10.52.37.21:8776/v3/1e0c00830035451d8eec5cc999851bb1'
-IDENTITY = 'http://10.52.37.21:5000/v2.0'
-PROJECT = 'umcloud'
-USER = 'umcloud'
-PWD = 'umcloud'
+VOLUMES_V3 = 'http://12.34.56.78:8776/v3/xxxxx'
+IDENTITY = 'http://12.34.56.78:5000/v2.0'
+PROJECT = 'zvampirem'
+USER = 'zvampirem'
+PWD = 'zvampirem'
 HEADERS = {'Content-Type': 'application/json'}
 
 def get_token():
