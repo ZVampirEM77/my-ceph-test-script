@@ -2,6 +2,29 @@
 
 ## migrate_volumes.py
 
+### Configuration
+
+- VOLUMES_V3
+
+  The OpenStack Block Storage API V3 Endpoint
+
+- IDENTITY
+
+  The OpenStack Keystone Endpoint
+
+- PROJECT
+
+  The OpenStack Project Name
+
+- USER
+
+  The OpenStack User Name
+
+- PWD
+
+  The OpenStack User Password
+
+
 ### Usage
 
 #### Export Available Volumes
