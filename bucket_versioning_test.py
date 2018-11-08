@@ -22,6 +22,11 @@ def suspend_bucket_versioning(client, bucket):
 def list_object_versions(client, bucket):
     return client.list_object_versions(Bucket = bucket)
 
+def remove_specified_version_obj(client, bucket, obj, version_id):
+    return client.delete_object(Bucket = bucket,
+                                Key = obj,
+                                VersionId = version_id)
+
 def default(o):
     if type(o) is datetime.date or type(o) is datetime.datetime:
         return o.isoformat()
@@ -38,7 +43,7 @@ def main():
                             aws_secret_access_key = 'em_test1',
                             config = Config(signature_version = 's3v4'))
 
-    opts, args = getopt.getopt(sys.argv[1:], 'g:p:s:l:', ['get=', 'put=', 'susp=', 'list='])
+    opts, args = getopt.getopt(sys.argv[1:], 'g:p:s:l:d', ['get=', 'put=', 'susp=', 'list='])
     if opts:
         for o, a in opts:
             if o in ('-g', '--get'):
@@ -55,6 +60,13 @@ def main():
             elif o in ('-l', '--list'):
                 res = list_object_versions(s3client, a)
                 print json_format(res)
+            elif o == '-d':
+                bucket = args[0]
+                obj = args[1]
+                version_id = args[2]
+                res = remove_specified_version_obj(s3client, bucket, obj, version_id)
+                print json_format(res)
+
     else:
         print 'Get optional error!'
         return -1
